@@ -32,7 +32,7 @@
  * @property {string} currency
  * @property {Category[]} diyCategories
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -316,10 +316,45 @@ function createJsonDriver(file) {
 let driver
 /** @type {string|null} */
 let driverError = null
+/** @type {{writable: boolean, reason: string|null}} */
+let dirHealth = { writable: false, reason: '尚未初始化' }
+
+/**
+ * 检查数据目录是否真的可写。
+ *
+ * 为什么必须查：容器化部署里最常见的一种静默故障是"目录存在但当前用户无权限写"。
+ * 这时 SQLite 打不开，代码会降级成 JSON 存储 —— 服务照常运行、页面照常能用，
+ * 但数据写在一个临时层里，重启就全没了。用户完全看不出问题。
+ * 所以启动时就把这件事查清楚并显式报出来。
+ */
+function checkDataDirWritable() {
+  const probe = join(DATA_DIR, '.write-probe')
+  try {
+    mkdirSync(DATA_DIR, { recursive: true })
+    writeFileSync(probe, String(Date.now()), 'utf8')
+    rmSync(probe, { force: true })
+    dirHealth = { writable: true, reason: null }
+    return true
+  } catch (e) {
+    dirHealth = {
+      writable: false,
+      reason: e instanceof Error ? e.message.split('\n')[0] : String(e),
+    }
+    return false
+  }
+}
 
 export function initStore() {
   if (driver) return driver
-  mkdirSync(DATA_DIR, { recursive: true })
+  checkDataDirWritable()
+  if (!dirHealth.writable) {
+    console.warn(
+      `[store] ⚠️ 数据目录不可写：${DATA_DIR}\n` +
+        `        原因：${dirHealth.reason}\n` +
+        `        服务仍会启动，但账本数据可能无法保存或在重启后丢失。\n` +
+        `        容器部署请确认该目录已挂载且属于运行用户（Spaces 强制 UID 1000）。`
+    )
+  }
   try {
     driver = createSqliteDriver(join(DATA_DIR, 'bubu.db'))
     // 真正跑一次查询，确保原生模块可用而不是假成功
@@ -342,6 +377,9 @@ export function storeInfo() {
     fallbackReason: driverError,
     dataDir: DATA_DIR,
     txns: driver.countTxns(),
+    // 暴露给前端设置页：数据目录不可写时给出明确警告，而不是让用户以为一切正常
+    dataDirWritable: dirHealth.writable,
+    dataDirProblem: dirHealth.reason,
     now: nowIso(),
   }
 }

@@ -83,9 +83,20 @@ export interface Health {
   driver: 'sqlite' | 'json'
   fallbackReason: string | null
   dataDir: string
+  /** 数据目录是否可写。false 表示账本可能在重启后丢失，必须显式告知用户 */
+  dataDirWritable?: boolean
+  dataDirProblem?: string | null
   txns: number
   visionModel: string
   visionReady: boolean
+  aiEnabled?: boolean
+  /** 护栏额度（公网部署时前端会展示剩余次数） */
+  quota?: {
+    callsToday: number
+    globalPerDay: number
+    perIpPerDay: number
+    resetsAt: string
+  }
   promptVersions: string[]
   activePrompt: string
 }

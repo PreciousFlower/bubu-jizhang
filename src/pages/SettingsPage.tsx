@@ -154,6 +154,21 @@ export function SettingsPage({ onChange }: { onChange: () => void }) {
       {/* 数据 */}
       <div className="card mt-3">
         <h2 className="text-sm font-bold">数据</h2>
+
+        {/* 数据目录不可写时的醒目警告：
+            这种情况下服务照常运行、记账也"看起来成功"，但重启后数据会全丢。
+            必须让用户看得见，而不是靠他自己猜。 */}
+        {live && live.dataDirWritable === false && (
+          <div className="mt-2 rounded-[18px] bg-peach-100 p-3 text-[11px] leading-relaxed text-peach-600">
+            <p className="font-bold">⚠️ 账本可能存不下来</p>
+            <p className="mt-1">
+              数据目录 <code className="font-mono">{live.dataDir}</code> 当前不可写，记录可能无法保存或在服务重启后丢失。
+            </p>
+            {live.dataDirProblem && <p className="mt-1 opacity-80">原因：{live.dataDirProblem}</p>}
+            <p className="mt-1">建议先用下面的「导出全部数据」备份，再检查部署环境的磁盘挂载与目录权限。</p>
+          </div>
+        )}
+
         <button onClick={exportData} className="btn-soft mt-2 w-full text-sm">
           📦 导出全部数据（JSON）
         </button>
