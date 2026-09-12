@@ -85,22 +85,23 @@ npm run seed:demo          # 清空：npm run seed:demo -- --clear
 
 ## 部署到公网（让朋友点开就能用）
 
-已经准备好两份配置，选一个即可：
+### 方案 A：Koyeb（推荐，**不需要信用卡**）
 
-### 方案 A：Render（推荐，免费）
+完整手把手步骤见 [`DEPLOY-KOYEB.md`](./DEPLOY-KOYEB.md)。要点：
 
-1. 把仓库推到 GitHub（公开仓库即可）
-2. Render 控制台 → **New → Blueprint** → 选中这个仓库（它会读根目录的 `render.yaml`）
-3. 在环境变量面板里填 `DEEPSEEK_API_KEY`（`render.yaml` 里标了 `sync: false`，不会进仓库）
-4. 部署完就能拿到 `https://xxx.onrender.com`，直接点开使用
+1. https://app.koyeb.com/auth/signup 用 GitHub 登录
+2. Create Service → 选 `bubu-jizhang` 仓库 → Builder 选 **Dockerfile**
+3. 填环境变量 `DEEPSEEK_API_KEY`，其余 `AI_*` 护栏变量照文档填
+4. **Volumes 里挂一个卷到 `/app/data`** —— 不挂的话重新部署会清空账本
+5. Deploy，3~5 分钟后拿到 `https://xxx.koyeb.app`
 
-构建时会自动执行 `scripts/prepare-assets.mjs` 现场采集贴图；采集失败也不影响启动（退回 emoji）。
+构建时会自动执行 `scripts/prepare-assets.mjs` 现场采集贴图；采集失败不影响启动（退回 emoji）。
 
-**免费实例的两个注意点**：
-- 闲置一段时间会休眠，首次访问要等 30~60 秒冷启动
-- 磁盘是临时的，**重新部署会清空 SQLite 里的账本数据**。想要数据不丢：升级到带 Persistent Disk 的实例，或把存储换成外部数据库（数据层已抽成 `server/lib/store.mjs`，换实现不影响上层）
+### 方案 B：Render
 
-### 方案 B：Docker（任何平台）
+仓库里有 `render.yaml` 蓝图，但 **Render 这条路径会要求绑定信用卡**（Blueprint 与免费 Web Service 都会），没卡就走方案 A。
+
+### 方案 C：Docker（任何平台）
 
 ```bash
 docker build -t bubu-jizhang .
