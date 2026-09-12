@@ -1,6 +1,6 @@
 # 界面与端到端验证记录
 
-- 时间：2026-09-12T11:37:37.666Z
+- 时间：2026-09-12T12:43:03.300Z
 - 目标：http://127.0.0.1:5273
 - 浏览器：C:\Program Files\Google\Chrome\Application\chrome.exe
 - 视口：430×932（移动端）deviceScaleFactor=2

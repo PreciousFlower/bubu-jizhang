@@ -1,3 +1,15 @@
+---
+title: 布布记账
+emoji: 🐼
+colorFrom: pink
+colorTo: yellow
+sdk: docker
+app_port: 7860
+pinned: false
+license: mit
+short_description: 拍张小票，AI 自动算出花了多少钱并记账
+---
+
 # 🐼 布布记账 · 一起攒小钱钱
 
 一个「布布一二」风格的可爱记账 App。最大特点是：**把你随手拍的小票 / 支付截图丢进去，AI 自动算出实际花了多少钱，生成一条记账记录。**
@@ -5,6 +17,9 @@
 <p align="center">
   <b>纯前端？不，是全栈单进程：</b>Express 同时提供 API 和前端静态文件，一个 <code>npm start</code> 就能跑起来。
 </p>
+
+> 上面的 YAML 头部是 **Hugging Face Spaces** 需要的配置（`sdk: docker` + `app_port: 7860`），
+> 部署步骤见 [`DEPLOY-HUGGINGFACE.md`](./DEPLOY-HUGGINGFACE.md)。在 GitHub 上它会显示成一段元数据，不影响阅读。
 
 ---
 
@@ -85,31 +100,35 @@ npm run seed:demo          # 清空：npm run seed:demo -- --clear
 
 ## 部署到公网（让朋友点开就能用）
 
-### 方案 A：Koyeb（推荐，**不需要信用卡**）
+### 方案 A：Hugging Face Spaces（推荐，**不需要信用卡**）
 
-完整手把手步骤见 [`DEPLOY-KOYEB.md`](./DEPLOY-KOYEB.md)。要点：
+完整手把手步骤见 [`DEPLOY-HUGGINGFACE.md`](./DEPLOY-HUGGINGFACE.md)。要点：
 
-1. https://app.koyeb.com/auth/signup 用 GitHub 登录
-2. Create Service → 选 `bubu-jizhang` 仓库 → Builder 选 **Dockerfile**
-3. 填环境变量 `DEEPSEEK_API_KEY`，其余 `AI_*` 护栏变量照文档填
-4. **Volumes 里挂一个卷到 `/app/data`** —— 不挂的话重新部署会清空账本
-5. Deploy，3~5 分钟后拿到 `https://xxx.koyeb.app`
+1. https://huggingface.co/new-space 新建 Space，SDK 选 **Docker → Blank**，硬件选免费 CPU
+2. 把仓库推上去：`git remote add hf https://huggingface.co/spaces/<用户名>/bubu-jizhang && git push hf main:main`
+3. 在 **Settings → Variables and secrets** 里加 `DEEPSEEK_API_KEY` 和几个 `AI_*` 变量
+4. 网址：`https://<用户名>-bubu-jizhang.hf.space`，点开即用
 
-构建时会自动执行 `scripts/prepare-assets.mjs` 现场采集贴图；采集失败不影响启动（退回 emoji）。
+⚠️ **免费层磁盘是临时的**，Space 重启会清空账本。想持久化：开 $5/月 的持久存储（已默认把数据目录指向 `/data`），或把存储换成免费外部数据库（数据层已抽象，加一个驱动即可）。
 
-### 方案 B：Render
+### 方案 B：Koyeb —— ❌ 已不可用
 
-仓库里有 `render.yaml` 蓝图，但 **Render 这条路径会要求绑定信用卡**（Blueprint 与免费 Web Service 都会），没卡就走方案 A。
+Koyeb 的免费 Starter 计划**已对新用户关闭**（老组织保留），且平台已被 Mistral 收购、正在转型 AI 负载。新注册账号拿不到免费实例。
 
-### 方案 C：Docker（任何平台）
+### 方案 C：Render —— ❌ 需要信用卡
+
+仓库里有 `render.yaml` 蓝图可以复用，但 Render 的免费 Web Service 与 Blueprint 路径**都会要求绑卡**。有卡的话可以直接用。
+
+### 方案 D：Docker（任何平台）
 
 ```bash
 docker build -t bubu-jizhang .
-docker run -p 8787:8787 \
+docker run -p 7860:7860 \
   -e DEEPSEEK_API_KEY=sk-xxxx \
-  -v $(pwd)/data:/app/data \
+  -v $(pwd)/data:/data \
   bubu-jizhang
 ```
+
 
 `data/` 挂出来，容器重建也不丢账本。`SKIP_ASSETS=1` 可跳过构建期的贴图采集。
 

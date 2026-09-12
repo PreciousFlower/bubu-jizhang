@@ -1,10 +1,15 @@
 # 多阶段构建：构建阶段装全部依赖并出产物，运行阶段只留运行期需要的东西。
 #
-# Koyeb / Fly.io / Railway / 自己的服务器都能直接用。
+# 适用：Hugging Face Spaces / Fly.io / Railway / Koyeb / 自己的服务器
 #   docker build -t bubu-jizhang .
-#   docker run -p 8787:8787 -e DEEPSEEK_API_KEY=sk-xxx -v $(pwd)/data:/app/data bubu-jizhang
+#   docker run -p 7860:7860 -e DEEPSEEK_API_KEY=sk-xxx -v $(pwd)/data:/data bubu-jizhang
 #
-# Koyeb 用户：不需要手动 build，平台会读这个文件；记得在控制台加环境变量并挂持久卷到 /app/data。
+# 关键设计（都是踩坑换来的，改动前请先看清楚）：
+#   1. 两个 npm ci 都**不能**加 --ignore-scripts —— sharp / better-sqlite3 是原生模块，
+#      要靠安装脚本取二进制，跳过后运行时 require 会直接失败。
+#   2. 运行阶段用非 root 的 UID 1000。Hugging Face Spaces 强制以 UID 1000 运行容器，
+#      如果用 root 建目录，运行时无权限写入 → 存储静默降级、数据丢失。
+#   3. 数据目录通过 DATA_DIR 指定，Spaces 的持久化存储挂在 /data。
 
 # ============================ 构建阶段 ============================
 FROM node:22-bookworm-slim AS build
@@ -12,9 +17,6 @@ WORKDIR /app
 
 # 先只拷依赖清单，利用 Docker 层缓存
 COPY package.json package-lock.json ./
-# 注意：这里**不能**加 --ignore-scripts。
-# sharp 与 better-sqlite3 是原生模块，要靠各自的安装脚本去取/编译二进制；
-# 跳过后运行时会在 require 阶段直接报错（这也是 scripts/check-runtime.mjs 要拦的情况）。
 RUN npm ci --include=dev
 
 COPY . .
@@ -30,10 +32,13 @@ RUN npm run build
 
 # ============================ 运行阶段 ============================
 FROM node:22-bookworm-slim AS runtime
+
+# Spaces 要求以 UID 1000 运行，这里先建好对应用户
+RUN useradd -m -u 1000 bubu
+
 WORKDIR /app
 ENV NODE_ENV=production
 
-# 同样不能加 --ignore-scripts，理由同上
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
@@ -45,9 +50,16 @@ COPY --from=build /app/scripts ./scripts
 # 启动前自检原生模块，装不上就立刻报错退出，而不是带病启动
 RUN node scripts/check-runtime.mjs
 
-# 数据目录：挂持久卷到这里，容器重建也不丢账本
-VOLUME ["/app/data"]
-EXPOSE 8787
-ENV PORT=8787
+# 数据目录：容器内默认放 /data，方便挂载（Spaces 的持久化存储也在这里）。
+# 目录必须属于 UID 1000，否则运行时无权限写入。
+ENV DATA_DIR=/data
+RUN mkdir -p /data && chown -R bubu:bubu /data /app
+VOLUME ["/data"]
+
+USER bubu
+
+# 7860 是 Hugging Face Spaces 的约定端口；其它平台会注入 PORT 覆盖它
+ENV PORT=7860
+EXPOSE 7860
 
 CMD ["node", "server/index.mjs"]

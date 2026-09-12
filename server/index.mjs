@@ -14,7 +14,9 @@ const ROOT = join(__dirname, '..')
 // .env.local 优先于 .env
 loadEnv({ path: join(ROOT, '.env.local'), override: true, quiet: true })
 
-const { initStore, store, storeInfo, DEFAULT_CATEGORIES, DEFAULT_SETTINGS, newId } = await import('./lib/store.mjs')
+const { initStore, store, storeInfo, DEFAULT_CATEGORIES, DEFAULT_SETTINGS, newId, dataDir } = await import(
+  './lib/store.mjs'
+)
 const { recognize, VisionError, normalizeImage, cacheStats } = await import('./lib/vision.mjs')
 const { LATEST, PROMPTS } = await import('./lib/prompts.mjs')
 const { checkAndConsume, recordUsage, guardStatus, startGuardSweeper, guardConfig, GuardError } = await import(
@@ -24,7 +26,8 @@ const { checkAndConsume, recordUsage, guardStatus, startGuardSweeper, guardConfi
 // 监听端口优先级：托管平台注入的 PORT > 本地 .env.local 的 API_PORT > 默认 8787
 // （踩坑记录：把 API_PORT 当监听端口会被 .env.local 的 override 覆盖，导致换端口无效）
 const PORT = Number(process.env.PORT || process.env.API_PORT || 8787)
-const UPLOAD_DIR = join(ROOT, 'data', 'uploads')
+// 上传目录跟着数据目录走（DATA_DIR 可覆盖，见 store.mjs），避免两边路径不一致
+const UPLOAD_DIR = join(dataDir(), 'uploads')
 const DIST_DIR = join(ROOT, 'dist')
 mkdirSync(UPLOAD_DIR, { recursive: true })
 

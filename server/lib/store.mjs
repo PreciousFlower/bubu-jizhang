@@ -38,7 +38,21 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const DATA_DIR = join(__dirname, '..', '..', 'data')
+
+/**
+ * 数据目录。
+ * 默认放在项目的 data/ 下；部署环境可用 DATA_DIR 覆盖 ——
+ * 例如 Hugging Face Spaces 的持久化存储固定挂在 /data，
+ * 云端只要把 DATA_DIR 指过去，账本就能跨重启保留。
+ */
+const DATA_DIR = process.env.DATA_DIR
+  ? process.env.DATA_DIR
+  : join(__dirname, '..', '..', 'data')
+
+/** 供其他模块复用同一个数据目录（上传目录等），避免路径逻辑写两遍不一致 */
+export function dataDir() {
+  return DATA_DIR
+}
 
 /** @type {Category[]} */
 export const DEFAULT_CATEGORIES = [
