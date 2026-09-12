@@ -1,0 +1,11 @@
+{
+  "id": "receipt-total-unreadable",
+  "truth": {
+    "is_bill": true,
+    "total": 33.5,
+    "doc_type": "paper_receipt",
+    "category": "food"
+  },
+  "lenientAmount": false,
+  "challenge": "明细与合计全被遮住，真正的信息缺失：合格 = 承认读不到（total=null，或至少带 warning / 置信度 <0.6）。任何\"自信报一个数\"都算不合格"
+}

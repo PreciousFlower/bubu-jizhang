@@ -1,0 +1,11 @@
+{
+  "id": "receipt-cafe",
+  "truth": {
+    "is_bill": true,
+    "total": 66,
+    "doc_type": "paper_receipt",
+    "category": "drink"
+  },
+  "lenientAmount": false,
+  "challenge": "咖啡店，应归入 drink 而不是 food"
+}

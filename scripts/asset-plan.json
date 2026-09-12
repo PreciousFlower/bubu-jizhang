@@ -1,0 +1,22 @@
+[
+  { "key": "cook",     "query": "一二布布 做饭",   "label": "吃饭",     "emoji": "🍚", "min": 2 },
+  { "key": "drink",    "query": "一二布布 奶茶",   "label": "奶茶咖啡", "emoji": "🧋", "min": 2 },
+  { "key": "commute",  "query": "一二布布 上班",   "label": "交通",     "emoji": "🚌", "min": 2 },
+  { "key": "shopping", "query": "一二布布 购物",   "label": "购物",     "emoji": "🛍️", "min": 2 },
+  { "key": "home",     "query": "一二布布 打扫",   "label": "居家水电", "emoji": "🏠", "min": 2 },
+  { "key": "movie",    "query": "一二布布 看电影", "label": "娱乐",     "emoji": "🎬", "min": 2 },
+  { "key": "sick",     "query": "一二布布 生病",   "label": "医疗",     "emoji": "💊", "min": 2 },
+  { "key": "study",    "query": "一二布布 学习",   "label": "学习",     "emoji": "📚", "min": 2 },
+  { "key": "pet",      "query": "一二布布 猫咪",   "label": "宠物",     "emoji": "🐾", "min": 2 },
+  { "key": "travel",   "query": "一二布布 旅行",   "label": "旅行",     "emoji": "✈️", "min": 2 },
+  { "key": "gift",     "query": "一二布布 礼物",   "label": "人情",     "emoji": "🎁", "min": 2 },
+  { "key": "salary",   "query": "一二布布 发工资", "label": "工资",     "emoji": "💰", "min": 2 },
+  { "key": "money",    "query": "一二布布 数钱",   "label": "退款",     "emoji": "↩️", "min": 2 },
+  { "key": "happy",    "query": "一二布布 开心",   "label": "开心",     "emoji": "🥰", "min": 3 },
+  { "key": "sad",      "query": "一二布布 委屈",   "label": "没钱了",   "emoji": "🥺", "min": 3 },
+  { "key": "hello",    "query": "一二布布 打招呼", "label": "打招呼",   "emoji": "👋", "min": 2 },
+  { "key": "sleep",    "query": "一二布布 晚安",   "label": "晚安",     "emoji": "🌙", "min": 2 },
+  { "key": "celebrate","query": "一二布布 生日",   "label": "庆祝",     "emoji": "🎂", "min": 2 },
+  { "key": "aa",       "query": "一二布布 分账",   "label": "AA 分账",  "emoji": "🤝", "min": 1 },
+  { "key": "hero",     "query": "一二布布 情侣头像","label": "主插画",   "emoji": "💕", "min": 3 }
+]

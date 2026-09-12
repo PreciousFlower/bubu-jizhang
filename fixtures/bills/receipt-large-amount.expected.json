@@ -1,0 +1,11 @@
+{
+  "id": "receipt-large-amount",
+  "truth": {
+    "is_bill": true,
+    "total": 2998,
+    "doc_type": "paper_receipt",
+    "category": "shopping"
+  },
+  "lenientAmount": false,
+  "challenge": "大额千元级，考数字位数解析（家电类 shopping / home 都算合理）"
+}

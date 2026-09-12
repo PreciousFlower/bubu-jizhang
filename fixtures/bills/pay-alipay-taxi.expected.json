@@ -1,0 +1,11 @@
+{
+  "id": "pay-alipay-taxi",
+  "truth": {
+    "is_bill": true,
+    "total": 34.5,
+    "doc_type": "payment_screenshot",
+    "category": "transport"
+  },
+  "lenientAmount": false,
+  "challenge": "交通类，且有小数（.50）"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "pay-bank-rent",
+  "truth": {
+    "is_bill": true,
+    "total": 1500,
+    "doc_type": "payment_screenshot",
+    "category": "home"
+  },
+  "lenientAmount": false,
+  "challenge": "整数千元转账，考是否为整数时也能正确输出"
+}

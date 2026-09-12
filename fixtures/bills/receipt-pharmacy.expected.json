@@ -1,0 +1,11 @@
+{
+  "id": "receipt-pharmacy",
+  "truth": {
+    "is_bill": true,
+    "total": 45.2,
+    "doc_type": "paper_receipt",
+    "category": "health"
+  },
+  "lenientAmount": false,
+  "challenge": "医药类商户，考分类语义"
+}

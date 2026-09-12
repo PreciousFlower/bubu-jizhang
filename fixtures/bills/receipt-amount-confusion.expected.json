@@ -1,0 +1,11 @@
+{
+  "id": "receipt-amount-confusion",
+  "truth": {
+    "is_bill": true,
+    "total": 169,
+    "doc_type": "paper_receipt",
+    "category": "shopping"
+  },
+  "lenientAmount": false,
+  "challenge": "同一张票上 249.00 / -60.00 / -20.00 三个数字，必须取实付 169.00。取原价或取折扣额都算错 —— 这是最贴近真实翻车场景的样本"
+}

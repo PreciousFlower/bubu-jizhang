@@ -1,0 +1,9 @@
+{
+  "id": "nonbill-cartoon",
+  "truth": {
+    "is_bill": false,
+    "total": null
+  },
+  "lenientAmount": false,
+  "challenge": "卡通插画，绝不能判成账单"
+}

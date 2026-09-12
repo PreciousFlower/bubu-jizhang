@@ -1,0 +1,9 @@
+{
+  "id": "nonbill-landscape",
+  "truth": {
+    "is_bill": false,
+    "total": null
+  },
+  "lenientAmount": false,
+  "challenge": "风景照，绝不能判成账单"
+}

@@ -1,0 +1,52 @@
+# Render 部署蓝图（Blueprint）
+#
+# 用法：把仓库推到 GitHub 后，在 Render 里选 New → Blueprint，指向本仓库即可。
+# 之后 Render 会读这个文件把服务建好，你只需要在环境变量面板里填 DEEPSEEK_API_KEY。
+#
+# 说明：这是「单进程全栈」部署 —— Express 同时提供 /api 接口和 dist/ 前端静态文件，
+# 前后端同源，不需要额外配跨域或反代。
+services:
+  - type: web
+    name: bubu-jizhang
+    runtime: node
+    plan: free
+    region: singapore
+    branch: main
+    # 构建三步：
+    #   1. 装依赖（--include=dev 是因为构建需要 vite/typescript，Render 默认跳过 devDependencies）
+    #   2. 现场采集贴图 —— 仓库里刻意不含版权素材，构建时从网上搜集并做视觉筛选。
+    #      采集失败不会中断构建（界面退回 emoji 占位）；设 SKIP_ASSETS=1 可完全跳过。
+    #   3. 构建前端
+    buildCommand: >-
+      npm install --include=dev --ignore-scripts &&
+      node scripts/prepare-assets.mjs &&
+      npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      # 用 Node 22：sharp 与 better-sqlite3 在这个版本都有官方预编译二进制，
+      # 不需要现场编译原生模块（缺少工具链时会直接装不上）
+      - key: NODE_VERSION
+        value: "22.18.0"
+      # 必须设为 false，否则 npm 会去跑 postinstall 脚本，在部分环境下会失败
+      - key: NPM_CONFIG_IGNORE_SCRIPTS
+        value: "true"
+      - key: DEEPSEEK_BASE_URL
+        value: https://api.deepseek.com
+      - key: DEEPSEEK_VISION_MODEL
+        value: deepseek-flash
+      - key: TRUST_PROXY
+        value: "true"
+      - key: AI_ENABLED
+        value: "true"
+      - key: AI_RATE_PER_MIN
+        value: "6"
+      - key: AI_RATE_PER_DAY
+        value: "40"
+      - key: AI_GLOBAL_PER_DAY
+        value: "300"
+      - key: AI_GLOBAL_TOKENS_PER_DAY
+        value: "1200000"
+      # 密钥不写在这里，去 Render 面板里手动填（sync: false 表示"部署时手填，不进仓库"）
+      - key: DEEPSEEK_API_KEY
+        sync: false

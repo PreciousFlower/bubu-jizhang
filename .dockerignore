@@ -1,0 +1,12 @@
+node_modules
+dist
+data
+logs
+.git
+.npm-cache
+assets-src
+public/bubu/*.webp
+public/bubu/manifest.json
+.env
+.env.local
+*.tsbuildinfo

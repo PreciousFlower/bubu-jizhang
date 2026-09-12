@@ -1,0 +1,11 @@
+{
+  "id": "pay-wechat-drink",
+  "truth": {
+    "is_bill": true,
+    "total": 18,
+    "doc_type": "payment_screenshot",
+    "category": "drink"
+  },
+  "lenientAmount": false,
+  "challenge": "支付截图，无明细，只有总金额"
+}

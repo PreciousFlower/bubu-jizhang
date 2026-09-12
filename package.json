@@ -1,0 +1,45 @@
+{
+  "name": "bubu-jizhang",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "布布一二风格的可爱记账 App（含 AI 拍照自动记账）",
+  "scripts": {
+    "dev": "concurrently -n web,api -c magenta,cyan \"vite\" \"node server/index.mjs\"",
+    "dev:web": "vite",
+    "dev:api": "node server/index.mjs",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "start": "node server/index.mjs",
+    "fetch:assets": "node scripts/fetch-assets.mjs",
+    "review:assets": "node scripts/review-assets.mjs",
+    "eval:vision": "node scripts/eval-vision.mjs",
+    "make:fixtures": "node scripts/make-fixtures.mjs",
+    "verify:ui": "node scripts/verify-ui.mjs",
+    "verify:layout": "node scripts/measure-layout.mjs",
+    "verify:guard": "node scripts/test-guard.mjs",
+    "review:shots": "node scripts/review-shots.mjs",
+    "seed:demo": "node scripts/seed-demo.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.2.4",
+    "playwright-core": "^1.63.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7"
+  }
+}

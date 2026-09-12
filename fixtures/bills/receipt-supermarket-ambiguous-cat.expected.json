@@ -1,0 +1,11 @@
+{
+  "id": "receipt-supermarket-ambiguous-cat",
+  "truth": {
+    "is_bill": true,
+    "total": 27.4,
+    "doc_type": "paper_receipt",
+    "category": "food"
+  },
+  "lenientAmount": false,
+  "challenge": "便利店混合商品，food / drink / home / shopping 都算合理，只要不是 other 这类无效分类即可"
+}

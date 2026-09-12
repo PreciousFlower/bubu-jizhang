@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-cream-200 text-ink font-cute antialiased;
+    /* 淡淡的奶油纸纹，全是 CSS 背景渐变，不依赖任何图片素材 */
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(255, 224, 196, 0.55), transparent 42%),
+      radial-gradient(circle at 88% 12%, rgba(255, 205, 191, 0.4), transparent 38%),
+      radial-gradient(circle at 50% 100%, rgba(191, 227, 208, 0.28), transparent 45%);
+    background-attachment: fixed;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ink-200 rounded-pill;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  /* 便利贴式卡片 */
+  .card {
+    @apply bg-white/95 rounded-blob p-4 shadow-sticker;
+    border: 2px solid rgba(91, 74, 66, 0.06);
+  }
+
+  /* 贴纸描边卡片：模拟贴纸白边 */
+  .sticker-card {
+    @apply bg-white rounded-blob p-3;
+    border: 3px solid #fff;
+    box-shadow:
+      0 0 0 2px rgba(255, 179, 167, 0.35),
+      0 8px 0 rgba(91, 74, 66, 0.06);
+  }
+
+  /* 票根撕裂边 */
+  .ticket {
+    position: relative;
+    @apply bg-white rounded-blob;
+    box-shadow: 0 8px 0 rgba(91, 74, 66, 0.06);
+  }
+  .ticket::before,
+  .ticket::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #fff3e6;
+    transform: translateY(-50%);
+  }
+  .ticket::before {
+    left: -9px;
+  }
+  .ticket::after {
+    right: -9px;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 font-bold
+           transition-transform duration-100 active:scale-[0.94] disabled:opacity-50 disabled:active:scale-100;
+  }
+  .btn-primary {
+    @apply btn bg-peach-500 text-white shadow-pop;
+  }
+  .btn-soft {
+    @apply btn bg-cream-300 text-ink shadow-sticker;
+  }
+  .btn-ghost {
+    @apply btn bg-white text-ink-700 shadow-sticker;
+  }
+
+  .field {
+    @apply w-full rounded-[20px] border-2 border-ink-100 bg-cream-100 px-4 py-3 text-ink
+           placeholder:text-ink-300 outline-none transition focus:border-peach-300 focus:bg-white;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-pill px-3 py-1 text-xs font-bold;
+  }
+
+  .dotted-line {
+    border-bottom: 2px dashed rgba(91, 74, 66, 0.14);
+  }
+
+  /* 手绘感晃动的容器描边（纯 CSS 边框，不是插画） */
+  .hand-border {
+    border: 2px solid rgba(91, 74, 66, 0.18);
+    border-radius: 30px 26px 32px 24px / 26px 32px 24px 30px;
+  }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}

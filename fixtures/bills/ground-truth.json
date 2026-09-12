@@ -1,0 +1,262 @@
+[
+  {
+    "id": "receipt-supermarket-discount",
+    "file": "receipt-supermarket-discount.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 76.4,
+      "doc_type": "paper_receipt",
+      "category": "food"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "有满减折扣：必须取折后实付 76.40，不能取小计 86.40，也不能取优惠额 -10.00",
+    "note": "有满减折扣：必须取折后实付 76.40，不能取小计 86.40，也不能取优惠额 -10.00"
+  },
+  {
+    "id": "receipt-clear-noodle",
+    "file": "receipt-clear-noodle.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 28,
+      "doc_type": "paper_receipt",
+      "category": "food"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "最简单的清晰小票，基线样本",
+    "note": "最简单的清晰小票，基线样本"
+  },
+  {
+    "id": "receipt-pharmacy",
+    "file": "receipt-pharmacy.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 45.2,
+      "doc_type": "paper_receipt",
+      "category": "health"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "医药类商户，考分类语义",
+    "note": "医药类商户，考分类语义"
+  },
+  {
+    "id": "receipt-cafe",
+    "file": "receipt-cafe.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 66,
+      "doc_type": "paper_receipt",
+      "category": "drink"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "咖啡店，应归入 drink 而不是 food",
+    "note": "咖啡店，应归入 drink 而不是 food"
+  },
+  {
+    "id": "receipt-large-amount",
+    "file": "receipt-large-amount.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 2998,
+      "doc_type": "paper_receipt",
+      "category": "shopping"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": [
+      "shopping",
+      "home"
+    ],
+    "challenge": "大额千元级，考数字位数解析（家电类 shopping / home 都算合理）",
+    "note": "大额千元级，考数字位数解析（家电类 shopping / home 都算合理）"
+  },
+  {
+    "id": "pay-wechat-drink",
+    "file": "pay-wechat-drink.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 18,
+      "doc_type": "payment_screenshot",
+      "category": "drink"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "支付截图，无明细，只有总金额",
+    "note": "支付截图，无明细，只有总金额"
+  },
+  {
+    "id": "pay-alipay-taxi",
+    "file": "pay-alipay-taxi.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 34.5,
+      "doc_type": "payment_screenshot",
+      "category": "transport"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "交通类，且有小数（.50）",
+    "note": "交通类，且有小数（.50）"
+  },
+  {
+    "id": "pay-bank-rent",
+    "file": "pay-bank-rent.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 1500,
+      "doc_type": "payment_screenshot",
+      "category": "home"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "整数千元转账，考是否为整数时也能正确输出",
+    "note": "整数千元转账，考是否为整数时也能正确输出"
+  },
+  {
+    "id": "pay-online-shopping",
+    "file": "pay-online-shopping.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 199,
+      "doc_type": "order_page",
+      "category": "shopping"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "订单号里有长数字串，考不会被订单号干扰",
+    "note": "订单号里有长数字串，考不会被订单号干扰"
+  },
+  {
+    "id": "receipt-total-unreadable",
+    "file": "receipt-total-unreadable.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 33.5,
+      "doc_type": "paper_receipt",
+      "category": "food"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": true,
+    "categoryAny": null,
+    "challenge": "明细与合计全被遮住，真正的信息缺失：合格 = 承认读不到（total=null，或至少带 warning / 置信度 <0.6）。任何\"自信报一个数\"都算不合格",
+    "note": "明细与合计全被遮住，真正的信息缺失：合格 = 承认读不到（total=null，或至少带 warning / 置信度 <0.6）。任何\"自信报一个数\"都算不合格"
+  },
+  {
+    "id": "receipt-amount-confusion",
+    "file": "receipt-amount-confusion.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 169,
+      "doc_type": "paper_receipt",
+      "category": "shopping"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "同一张票上 249.00 / -60.00 / -20.00 三个数字，必须取实付 169.00。取原价或取折扣额都算错 —— 这是最贴近真实翻车场景的样本",
+    "note": "同一张票上 249.00 / -60.00 / -20.00 三个数字，必须取实付 169.00。取原价或取折扣额都算错 —— 这是最贴近真实翻车场景的样本"
+  },
+  {
+    "id": "receipt-supermarket-ambiguous-cat",
+    "file": "receipt-supermarket-ambiguous-cat.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 27.4,
+      "doc_type": "paper_receipt",
+      "category": "food"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": [
+      "food",
+      "home",
+      "drink",
+      "shopping"
+    ],
+    "challenge": "便利店混合商品，food / drink / home / shopping 都算合理，只要不是 other 这类无效分类即可",
+    "note": "便利店混合商品，food / drink / home / shopping 都算合理，只要不是 other 这类无效分类即可"
+  },
+  {
+    "id": "receipt-no-total-line",
+    "file": "receipt-no-total-line.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 10,
+      "doc_type": "paper_receipt",
+      "category": "food"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "合计行是空的（金额被抹掉），必须靠明细求和 3.5+4+2.5=10.00 得到结果，服务端对账逻辑必须生效",
+    "note": "合计行是空的（金额被抹掉），必须靠明细求和 3.5+4+2.5=10.00 得到结果，服务端对账逻辑必须生效"
+  },
+  {
+    "id": "pay-multi-amount-coupon",
+    "file": "pay-multi-amount-coupon.jpg",
+    "kind": "bill",
+    "truth": {
+      "is_bill": true,
+      "total": 149,
+      "doc_type": "payment_screenshot",
+      "category": "food"
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "同一张图里同时出现 199.00 和 50.00，必须取实付 149.00 —— v1/v2 在这里最容易翻车",
+    "note": "同一张图里同时出现 199.00 和 50.00，必须取实付 149.00 —— v1/v2 在这里最容易翻车"
+  },
+  {
+    "id": "nonbill-cartoon",
+    "file": "nonbill-cartoon.jpg",
+    "kind": "nonbill",
+    "truth": {
+      "is_bill": false,
+      "total": null
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "卡通插画，绝不能判成账单",
+    "note": "卡通插画，绝不能判成账单"
+  },
+  {
+    "id": "nonbill-landscape",
+    "file": "nonbill-landscape.jpg",
+    "kind": "nonbill",
+    "truth": {
+      "is_bill": false,
+      "total": null
+    },
+    "lenient": false,
+    "assertNoFalseCertainty": false,
+    "categoryAny": null,
+    "challenge": "风景照，绝不能判成账单",
+    "note": "风景照，绝不能判成账单"
+  }
+]

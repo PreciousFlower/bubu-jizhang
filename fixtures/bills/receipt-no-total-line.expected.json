@@ -1,0 +1,11 @@
+{
+  "id": "receipt-no-total-line",
+  "truth": {
+    "is_bill": true,
+    "total": 10,
+    "doc_type": "paper_receipt",
+    "category": "food"
+  },
+  "lenientAmount": false,
+  "challenge": "合计行是空的（金额被抹掉），必须靠明细求和 3.5+4+2.5=10.00 得到结果，服务端对账逻辑必须生效"
+}

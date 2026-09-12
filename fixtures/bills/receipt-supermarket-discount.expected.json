@@ -1,0 +1,11 @@
+{
+  "id": "receipt-supermarket-discount",
+  "truth": {
+    "is_bill": true,
+    "total": 76.4,
+    "doc_type": "paper_receipt",
+    "category": "food"
+  },
+  "lenientAmount": false,
+  "challenge": "有满减折扣：必须取折后实付 76.40，不能取小计 86.40，也不能取优惠额 -10.00"
+}

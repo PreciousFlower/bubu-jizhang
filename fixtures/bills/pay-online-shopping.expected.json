@@ -1,0 +1,11 @@
+{
+  "id": "pay-online-shopping",
+  "truth": {
+    "is_bill": true,
+    "total": 199,
+    "doc_type": "order_page",
+    "category": "shopping"
+  },
+  "lenientAmount": false,
+  "challenge": "订单号里有长数字串，考不会被订单号干扰"
+}

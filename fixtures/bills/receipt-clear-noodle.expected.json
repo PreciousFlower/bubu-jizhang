@@ -1,0 +1,11 @@
+{
+  "id": "receipt-clear-noodle",
+  "truth": {
+    "is_bill": true,
+    "total": 28,
+    "doc_type": "paper_receipt",
+    "category": "food"
+  },
+  "lenientAmount": false,
+  "challenge": "最简单的清晰小票，基线样本"
+}
