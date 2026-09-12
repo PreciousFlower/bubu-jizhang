@@ -1,0 +1,53 @@
+[Unit]
+Description=布布记账 App（Express API + 前端静态托管）
+Documentation=https://github.com/PreciousFlower/bubu-jizhang
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=__USER__
+WorkingDirectory=__APP_DIR__
+
+# ---- 运行参数 ----
+# PORT 通过环境变量注入，代码里读取 process.env.PORT
+# （设置了 PORT 后服务会监听 0.0.0.0，容器外的朋友才能访问）
+Environment=NODE_ENV=production
+Environment=PORT=7860
+
+# ---- DeepSeek 识别服务 ----
+Environment=DEEPSEEK_API_KEY=__API_KEY__
+Environment=DEEPSEEK_BASE_URL=https://api.deepseek.com
+Environment=DEEPSEEK_VISION_MODEL=deepseek-flash
+
+# ---- AI 护栏 ----
+# 站点用的是自己的 Key，不设限等于把额度开放给全网。
+# 触发限流会返回 429 + Retry-After，前端会显示友好提示，不会白屏。
+Environment=AI_ENABLED=true
+Environment=AI_RATE_PER_MIN=6
+Environment=AI_RATE_PER_DAY=40
+Environment=AI_GLOBAL_PER_DAY=300
+Environment=AI_GLOBAL_TOKENS_PER_DAY=1200000
+
+# 本地直连、前面没有反向代理；设为 true 时 express 会信任 X-Forwarded-For，
+# 直连场景下反而会让所有访客算成同一个 IP，所以这里必须是 false
+Environment=TRUST_PROXY=false
+
+# ---- 启动 ----
+ExecStart=/usr/bin/node server/index.mjs
+
+# ---- 自动重启与开机自启 ----
+Restart=always
+RestartSec=5
+StandardOutput=append:__APP_DIR__/logs/service.log
+StandardError=append:__APP_DIR__/logs/service.err.log
+
+# ---- 安全加固（普通用户运行，只给必要权限）----
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=false
+ReadWritePaths=__APP_DIR__
+
+[Install]
+WantedBy=multi-user.target

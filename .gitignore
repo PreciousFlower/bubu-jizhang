@@ -17,10 +17,16 @@ data/
 # ===== 贴图素材刻意不进仓库 =====
 # 这些卡通贴图是从互联网搜集的，版权归原作者所有，仅供个人学习使用，
 # 公开仓库里再分发不合适。请运行 `npm run fetch:assets` 在本机自行采集，
-# 或用内置的 CSS 兜底插画（不采集素材也能正常跑）。
+# 没有素材时界面会退回 emoji 占位。
 public/bubu/*.webp
 public/bubu/manifest.json
 assets-src/
+
+# 本地临时产物
+# 注意：gitignore 不支持行尾注释！注释必须独占一行，
+# 否则像 ".hf-upload/   # 说明" 这样会被当成一个字面文件名，规则失效。
+.hf-upload/
+tools/
 
 # 日志：运行日志不进仓库，但保留评测/评审报告（它们是交付证据）
 logs/*.log
